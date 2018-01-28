@@ -1,16 +1,15 @@
-{% include "captcha/options.html" %}
-
-{# import recaptcha_ajax.js in your body  #} 
-{# <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script> #}
+{# import recaptcha_ajax.js in your body  #}
+{# <script type="text/javascript" src="//www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script> #}
 
 <div id="Recap"></div>
 <script type="text/javascript">
-Recaptcha.create("{{ public_key }}",
+  var RecaptchaOptions = {{ options }};
+  Recaptcha.create("{{ public_key }}",
     "Recap",
     {
-      theme: "red",
+      theme: RecaptchaOptions['theme'] || "red",
       callback: Recaptcha.focus_response_field
-    }, 
+    },
     RecaptchaOptions
   );
 </script>
@@ -18,8 +17,8 @@ Recaptcha.create("{{ public_key }}",
 
 {% comment %}
 <noscript>
-  <iframe src="{{api_server}}/noscript?k={{public_key}}{{error_param}}" height="300" width="500" frameborder="0"></iframe><br />
+  <iframe src="{{ api_server }}/noscript?k={{ public_key }}" height="300" width="500" frameborder="0"></iframe><br />
   <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
-  <input type='hidden' name='recaptcha_response_field' value='manual_challenge' />
+  <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
 </noscript>
 {% endcomment %}
